@@ -23,6 +23,18 @@ services:
       KAFKA_CREATE_TOPICS: "test-topic:1:1"
     volumes:
       - ./kafka-data:/tmp/kraft-combined-logs
+    healthcheck:
+      test: 
+        - "CMD"
+        - "bash"
+        - "-c"
+        - |
+          # Проверяем доступность брокера Kafka
+          kafka-broker-api-versions.sh --bootstrap-server localhost:9092
+      interval: 10s
+      timeout: 20s
+      retries: 10
+      start_period: 40s
 
   postgres:
     image: postgres:15
@@ -35,4 +47,26 @@ services:
       - "5432:5432"
     volumes:
       - ./MainService/migrations:/docker-entrypoint-initdb.d
-      
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  main:
+    image: main_service
+    build:
+      context: ./MainService
+    ports:
+    - "8081:8081"
+    depends_on:
+      - kafka
+      - postgres
+
+  DataProducer:
+    image: data_producer
+    build:
+      context: ./DataProducer
+    depends_on:
+      - kafka
+      - postgres

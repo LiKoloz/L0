@@ -52,3 +52,14 @@ CREATE TABLE items (
     brand VARCHAR(100) NOT NULL,
     status INTEGER NOT NULL
 );
+
+-- Выдача прав на конкретную таблицу
+GRANT ALL PRIVILEGES ON TABLE orders TO demo_user;
+
+-- Выдача прав на все таблицы в схеме public
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO demo_user;
+
+-- Смена владельца таблицы
+ALTER TABLE delivery OWNER TO demo_user;
+ALTER TABLE payment OWNER TO demo_user;
+ALTER TABLE items OWNER TO demo_user;
