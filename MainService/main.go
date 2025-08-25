@@ -69,7 +69,7 @@ func main() {
 		time.Sleep(30 * time.Second)
 
 		client := http.Client{}
-		resp, err := client.Get("http://localhost:8081/order/min_order_333")
+		resp, err := client.Get("http://localhost:8081/order/order_888_it")
 		if err != nil {
 			fmt.Println(err)
 			return
