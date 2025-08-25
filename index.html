@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Получить заказ по UUID</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="text"] {
+            width: 300px;
+            padding: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 8px 16px;
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        #result {
+            margin-top: 20px;
+            white-space: pre-wrap; /* сохраняет форматирование */
+            background-color: #f0f0f0;
+            padding: 10px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Получить заказ по UUID</h2>
+
+<input type="text" id="uuidInput" placeholder="Введите UUID" />
+<button id="fetchBtn">Получить заказ</button>
+
+<div id="result"></div>
+
+<script>
+    document.getElementById('fetchBtn').addEventListener('click', () => {
+        const uuid = document.getElementById('uuidInput').value.trim();
+        const resultDiv = document.getElementById('result');
+
+        if (!uuid) {
+            resultDiv.textContent = 'Введите UUID.';
+            return;
+        }
+
+        resultDiv.textContent = 'Загрузка...';
+
+        fetch(`http://localhost:8081/order/${uuid}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Ошибка HTTP ${response.status}`);
+                }
+                return response.json(); 
+            })
+            .then(data => {
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+            })
+            .catch(error => {
+                resultDiv.textContent = 'Ошибка при получении данных:\n' + error.message;
+            });
+    });
+</script>
+
+</body>
+</html>
