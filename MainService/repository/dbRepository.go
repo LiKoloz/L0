@@ -7,10 +7,10 @@ import (
 	"fmt"
 )
 
-func InsertOrder(order Order) error {
+var db, err = sql.Open("postgres",
+	"postgres://postgres:postgres@postgres:5432/user_db?sslmode=disable")
 
-	db, err := sql.Open("postgres",
-		"postgres://postgres:postgres@postgres:5432/user_db?sslmode=disable")
+func InsertOrder(order Order) error {
 
 	if err != nil {
 		fmt.Println("Failed to connect to database: ", err)
@@ -134,8 +134,6 @@ func InsertOrder(order Order) error {
 }
 
 func GetOrder(idStr string) (Order, error) {
-	db, err := sql.Open("postgres",
-		"postgres://postgres:postgres@postgres:5432/user_db?sslmode=disable")
 
 	if err != nil {
 		fmt.Println("Failed to connect to database: ", err)
@@ -196,8 +194,6 @@ func GetOrder(idStr string) (Order, error) {
 
 // Функция для восстановления данных из БД
 func Get5Orderd(m *[5]Order) error {
-	db, err := sql.Open("postgres",
-		"postgres://postgres:postgres@postgres:5432/user_db?sslmode=disable")
 
 	if err != nil {
 		fmt.Printf("Failed to connect to database: %v", err)

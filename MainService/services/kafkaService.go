@@ -41,13 +41,5 @@ func GetDataFromKafka(mas *[5]Order, i *int) {
 		mas[*i] = order
 		*i++
 		fmt.Println("Order inserted successfully!")
-		fmt.Println("----------------------------------------------------")
-		for _, i := range mas {
-			fmt.Println(i.OrderUID)
-		}
-		fmt.Println("----------------------------------------------------")
-
-		fmt.Println("End sycle get data")
 	}
-	fmt.Println("End function get kafka data")
 }
