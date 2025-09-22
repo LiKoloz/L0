@@ -30,16 +30,20 @@ func GetDataFromKafka(mas *[5]Order, i *int) {
 		fmt.Println("Получили: ", string(msg.Value))
 
 		err = json.Unmarshal(msg.Value, &order)
-
-		err = InsertOrder(order)
-		if err != nil {
-			panic(fmt.Sprintf("Failed to insert order: %v", err))
+		if err := order.Validate(); err != nil {
+			fmt.Errorf("invalid order data: %v", err)
+		} else {
+			err = InsertOrder(order)
+			if err != nil {
+				fmt.Sprintf("Failed to insert order: %v", err)
+			} else {
+				if *i == 5 {
+					*i = 0
+				}
+				mas[*i] = order
+				*i++
+				fmt.Println("Order inserted successfully!")
+			}
 		}
-		if *i == 5 {
-			*i = 0
-		}
-		mas[*i] = order
-		*i++
-		fmt.Println("Order inserted successfully!")
 	}
 }
