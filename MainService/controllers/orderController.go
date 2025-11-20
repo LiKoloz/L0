@@ -11,12 +11,12 @@ import (
 )
 
 // Кеш и счетчик
-var chache [5]Order
+var chache = make(map[string]Order)
 var i int = 0
 
 func OrderEndPoint() {
-	go GetDataFromKafka(&chache, &i)
-	go Get5Orderd(&chache)
+	go GetDataFromKafka(chache)
+	go Get5Orderd(chache)
 	http.HandleFunc("/order/", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		idStr := strings.TrimPrefix(r.URL.Path, "/order/")

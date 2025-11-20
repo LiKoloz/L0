@@ -10,7 +10,7 @@ import (
 	"github.com/segmentio/kafka-go"
 )
 
-func GetDataFromKafka(mas *[5]Order, i *int) {
+func GetDataFromKafka(mas map[string]Order) {
 	reader := kafka.NewReader(kafka.ReaderConfig{
 		Brokers: []string{"kafka:9092"},
 		Topic:   "test-topic",
@@ -37,11 +37,7 @@ func GetDataFromKafka(mas *[5]Order, i *int) {
 			if err != nil {
 				fmt.Sprintf("Failed to insert order: %v", err)
 			} else {
-				if *i == 5 {
-					*i = 0
-				}
-				mas[*i] = order
-				*i++
+				mas[order.OrderUID] = order
 				fmt.Println("Order inserted successfully!")
 			}
 		}

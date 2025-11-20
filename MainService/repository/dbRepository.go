@@ -193,7 +193,7 @@ func GetOrder(idStr string) (Order, error) {
 }
 
 // Функция для восстановления данных из БД
-func Get5Orderd(m *[5]Order) error {
+func Get5Orderd(m map[string]Order) error {
 
 	if err != nil {
 		fmt.Printf("Failed to connect to database: %v", err)
@@ -231,7 +231,7 @@ func Get5Orderd(m *[5]Order) error {
 		if err != nil {
 			fmt.Printf("Error: %v", err)
 		}
-		m[i] = o
+		m[string(u)] = o
 		i++
 	}
 	return nil

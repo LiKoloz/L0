@@ -2,7 +2,6 @@ package main
 
 import (
 	. "L0_WB/controllers"
-	. "L0_WB/models"
 	"fmt"
 	"io"
 	"net/http"
@@ -10,9 +9,6 @@ import (
 
 	_ "github.com/lib/pq"
 )
-
-var mas [5]Order
-var i int = 0
 
 func main() {
 	go func() {
