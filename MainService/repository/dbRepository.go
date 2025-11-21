@@ -1,13 +1,13 @@
 package repository
 
 import (
-	. "L0_WB/models"
 	"database/sql"
 	"errors"
 	"fmt"
 	"os"
-)
 
+	. "L0_WB/models"
+)
 var db *sql.DB = nil
 var err error
 

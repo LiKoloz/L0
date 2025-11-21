@@ -1,11 +1,12 @@
 package services
 
 import (
-	. "L0_WB/models"
-	. "L0_WB/repository"
 	"context"
 	"encoding/json"
 	"fmt"
+
+	. "L0_WB/models"
+	. "L0_WB/repository"
 
 	"github.com/segmentio/kafka-go"
 )
