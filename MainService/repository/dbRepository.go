@@ -5,13 +5,33 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"os"
 )
 
-var db, err = sql.Open("postgres",
-	"postgres://postgres:postgres@postgres:5432/user_db?sslmode=disable")
+var db *sql.DB = nil
+var err error
+
+func initDb() {
+	if err := godotenv.Load(); err != nil {
+		fmt.Print("No .env file found")
+	}
+	if db_user, e := os.LookupEnv("DB_USER"); e != nil {
+		panic("Can't get DB_USER from .env")
+	}
+	if db_password, e := os.LookupEnv("DB_Password"); e != nil {
+		panic("Can't get DB_PASSWORD from .env")
+	}
+	if db_port, e := os.LookupEnv("DB_Password"); e != nil {
+		panic("Can't get DB_PASSWORD from .env")
+	}
+	db, err = sql.Open("postgres",
+		"postgres://postgres:"+db_user+"@"+db_password+":"+db_port+"/user_db?sslmode=disable")
+}
 
 func InsertOrder(order Order) error {
-
+	if db == nil{
+		panic(db = nil)
+	}
 	if err != nil {
 		fmt.Println("Failed to connect to database: ", err)
 		return errors.New("Failed to connect to database")
@@ -134,7 +154,9 @@ func InsertOrder(order Order) error {
 }
 
 func GetOrder(idStr string) (Order, error) {
-
+	if db == nil{
+		panic(db = nil)
+	}
 	if err != nil {
 		fmt.Println("Failed to connect to database: ", err)
 		return Order{}, errors.New("Failed to connect to database")
@@ -194,7 +216,9 @@ func GetOrder(idStr string) (Order, error) {
 
 // Функция для восстановления данных из БД
 func Get5Orderd(m map[string]Order) error {
-
+if db == nil{
+		panic(db = nil)
+	}
 	if err != nil {
 		fmt.Printf("Failed to connect to database: %v", err)
 	}

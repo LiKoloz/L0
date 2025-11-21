@@ -17,6 +17,7 @@ func GetDataFromKafka(mas map[string]Order) {
 		GroupID: "my-groupID",
 	})
 	defer reader.Close()
+	initDb()
 	fmt.Println("Start get data")
 	for {
 		fmt.Println("Start sycle get data")
