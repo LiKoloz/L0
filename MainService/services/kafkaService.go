@@ -29,16 +29,19 @@ func GetDataFromKafka(mas map[string]Order) {
 
 		fmt.Println("Получили: ", string(msg.Value))
 
-		err = json.Unmarshal(msg.Value, &order)
-		if err := validate.Struct(order); err != nil {
+		if err = json.Unmarshal(msg.Value, &order); err != nil {
 			fmt.Errorf("invalid order data: %v", err)
 		} else {
-			err = InsertOrder(order)
-			if err != nil {
-				fmt.Sprintf("Failed to insert order: %v", err)
+			if err := validate.Struct(order); err != nil {
+				fmt.Errorf("invalid order data: %v", err)
 			} else {
-				mas[order.OrderUID] = order
-				fmt.Println("Order inserted successfully!")
+				err = InsertOrder(order)
+				if err != nil {
+					fmt.Sprintf("Failed to insert order: %v", err)
+				} else {
+					mas[order.OrderUID] = order
+					fmt.Println("Order inserted successfully!")
+				}
 			}
 		}
 	}
