@@ -9,17 +9,17 @@ import (
 )
 
 type Order struct {
-	OrderUID        string    `json:"order_uid" db:"order_uid"`
-	TrackNumber     string    `json:"track_number" db:"track_number"`
-	Entry           string    `json:"entry" db:"entry"`
-	Locale          string    `json:"locale" db:"locale"`
-	InternalSig     string    `json:"internal_signature" db:"internal_signature"`
-	CustomerID      string    `json:"customer_id" db:"customer_id"`
-	DeliveryService string    `json:"delivery_service" db:"delivery_service"`
-	ShardKey        string    `json:"shardkey" db:"shardkey"`
-	SmID            int       `json:"sm_id" db:"sm_id"`
-	DateCreated     time.Time `json:"date_created" db:"date_created"`
-	OofShard        string    `json:"oof_shard" db:"oof_shard"`
+	OrderUID        string    `json:"order_uid" db:"order_uid" validate:"required, uuid"`
+	TrackNumber     string    `json:"track_number" db:"track_number" validate:"required, min=1,max=50"`
+	Entry           string    `json:"entry" db:"entry" validate:"required, min=1,max=50"`
+	Locale          string    `json:"locale" db:"locale" validate:"required, min=1,max=50"`
+	InternalSig     string    `json:"internal_signature" db:"internal_signature" validate:"required, min=1,max=50"`
+	CustomerID      string    `json:"customer_id" db:"customer_id" validate:"required, min=1,max=50"`
+	DeliveryService string    `json:"delivery_service" db:"delivery_service" validate:"required, min=1,max=50"`
+	ShardKey        string    `json:"shardkey" db:"shardkey" validate:"required, min=1,max=50"`
+	SmID            int       `json:"sm_id" db:"sm_id" validate:"required"`
+	DateCreated     time.Time `json:"date_created" db:"date_created" validate:"required"`
+	OofShard        string    `json:"oof_shard" db:"oof_shard" validate:"required, min=1,max=50"`
 	Delivery        Delivery  `json:"delivery" db:"-"`
 	Payment         Payment   `json:"payment" db:"-"`
 	Items           []Item    `json:"items" db:"-"`

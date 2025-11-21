@@ -3,16 +3,16 @@ package models
 import "errors"
 
 type Payment struct {
-	Transaction  string `json:"transaction" db:"transaction"`
-	RequestID    string `json:"request_id" db:"request_id"`
-	Currency     string `json:"currency" db:"currency"`
-	Provider     string `json:"provider" db:"provider"`
-	Amount       int    `json:"amount" db:"amount"`
-	PaymentDT    int64  `json:"payment_dt" db:"payment_dt"`
-	Bank         string `json:"bank" db:"bank"`
-	DeliveryCost int    `json:"delivery_cost" db:"delivery_cost"`
-	GoodsTotal   int    `json:"goods_total" db:"goods_total"`
-	CustomFee    int    `json:"custom_fee" db:"custom_fee"`
+	Transaction  string `json:"transaction" db:"transaction" validate:"required, min=1,max=50"`
+	RequestID    string `json:"request_id" db:"request_id" validate:"required, min=1,max=50"`
+	Currency     string `json:"currency" db:"currency" validate:"required, min=1,max=50"`
+	Provider     string `json:"provider" db:"provider" validate:"required, min=1,max=50"`
+	Amount       int    `json:"amount" db:"amount" validate:"required"`
+	PaymentDT    int64  `json:"payment_dt" db:"payment_dt" validate:"required"`
+	Bank         string `json:"bank" db:"bank" validate:"required, min=1,max=50"`
+	DeliveryCost int    `json:"delivery_cost" db:"delivery_cost" validate:"required"`
+	GoodsTotal   int    `json:"goods_total" db:"goods_total" validate:"required"`
+	CustomFee    int    `json:"custom_fee" db:"custom_fee" validate:"required"`
 }
 
 func (p *Payment) Validate() error {
