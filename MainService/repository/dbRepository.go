@@ -7,7 +7,10 @@ import (
 	"os"
 
 	. "L0_WB/models"
+
+	"github.com/joho/godotenv"
 )
+
 var db *sql.DB = nil
 var err error
 
@@ -15,22 +18,22 @@ func initDb() {
 	if err := godotenv.Load(); err != nil {
 		fmt.Print("No .env file found")
 	}
-	if db_user, e := os.LookupEnv("DB_USER"); e != nil {
+	if dbUser, e := os.LookupEnv("DB_USER"); e != nil {
 		panic("Can't get DB_USER from .env")
 	}
-	if db_password, e := os.LookupEnv("DB_Password"); e != nil {
+	if dbPassword, e := os.LookupEnv("DB_Password"); e != nil {
 		panic("Can't get DB_PASSWORD from .env")
 	}
-	if db_port, e := os.LookupEnv("DB_Password"); e != nil {
+	if dbPort, e := os.LookupEnv("DB_Password"); e != nil {
 		panic("Can't get DB_PASSWORD from .env")
 	}
 	db, err = sql.Open("postgres",
-		"postgres://postgres:"+db_user+"@"+db_password+":"+db_port+"/user_db?sslmode=disable")
+		"postgres://postgres:"+dbUser+"@"+dbPassword+":"+dbPort+"/user_db?sslmode=disable")
 }
 
 func InsertOrder(order Order) error {
-	if db == nil{
-		panic(db = nil)
+	if db == nil {
+		panic("db = nil")
 	}
 	if err != nil {
 		fmt.Println("Failed to connect to database: ", err)
@@ -65,10 +68,10 @@ func InsertOrder(order Order) error {
 	}()
 
 	_, err = tx.Exec(`
-		INSERT INTO orders (
-			order_uid, track_number, entry, locale, internal_signature, customer_id,
-			delivery_service, shardkey, sm_id, date_created, oof_shard
-		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+                INSERT INTO orders (
+                        order_uid, track_number, entry, locale, internal_signature, customer_id,
+                        delivery_service, shardkey, sm_id, date_created, oof_shard
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
 		order.OrderUID,
 		order.TrackNumber,
 		order.Entry,
@@ -86,9 +89,9 @@ func InsertOrder(order Order) error {
 	}
 
 	_, err = tx.Exec(`
-		INSERT INTO delivery (
-			order_uid, name, phone, zip, city, address, region, email
-		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
+                INSERT INTO delivery (
+                        order_uid, name, phone, zip, city, address, region, email
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
 		order.OrderUID,
 		order.Delivery.Name,
 		order.Delivery.Phone,
@@ -103,10 +106,10 @@ func InsertOrder(order Order) error {
 	}
 
 	_, err = tx.Exec(`
-		INSERT INTO payment (
-			transaction, request_id, currency, provider, amount, payment_dt, bank,
-			delivery_cost, goods_total, custom_fee
-		) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+                INSERT INTO payment (
+                        transaction, request_id, currency, provider, amount, payment_dt, bank,
+                        delivery_cost, goods_total, custom_fee
+                ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
 		order.Payment.Transaction,
 		order.Payment.RequestID,
 		order.Payment.Currency,
@@ -124,10 +127,10 @@ func InsertOrder(order Order) error {
 
 	for _, item := range order.Items {
 		_, err = tx.Exec(`
-			INSERT INTO items (
-				order_uid, chrt_id, track_number, price, rid, name, sale, size, 
-				total_price, nm_id, brand, status
-			) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
+                        INSERT INTO items (
+                                order_uid, chrt_id, track_number, price, rid, name, sale, size,
+                                total_price, nm_id, brand, status
+                        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)`,
 			order.OrderUID,
 			item.ChrtID,
 			item.TrackNumber,
@@ -154,8 +157,8 @@ func InsertOrder(order Order) error {
 }
 
 func GetOrder(idStr string) (Order, error) {
-	if db == nil{
-		panic(db = nil)
+	if db == nil {
+		panic("db = nil")
 	}
 	if err != nil {
 		fmt.Println("Failed to connect to database: ", err)
@@ -216,8 +219,8 @@ func GetOrder(idStr string) (Order, error) {
 
 // Функция для восстановления данных из БД
 func Get5Orderd(m map[string]Order) error {
-if db == nil{
-		panic(db = nil)
+	if db == nil {
+		panic("db = nil")
 	}
 	if err != nil {
 		fmt.Printf("Failed to connect to database: %v", err)

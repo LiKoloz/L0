@@ -11,7 +11,7 @@ import (
 	. "L0_WB/services"
 )
 
-// Кеш и счетчик
+// КЕШ
 var chache = make(map[string]Order)
 var i int = 0
 
